@@ -7,68 +7,73 @@
     <title>Lumora School of Magic</title>
     <style>
         body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background: url("pics/Poster for edit 2.png") no-repeat center top fixed;
-        background-size: 390px 844px; /* ขนาดมือถือยอดนิยม */
-        background-repeat: no-repeat;
-        background-position: center top;
-        font-family: "Georgia", serif;
-        color: white;
-        text-align: center;
-        cursor: pointer;
-        overflow: hidden;
-        min-width: 390px;
-        min-height: 844px;
-        max-width: 390px;
-        max-height: 844px;
-        width: 390px;
-        height: 844px;
-        box-sizing: border-box;
-        position: relative;
-    }
-       .sparkle {
-        position: absolute;
-        pointer-events: none;
-        z-index: 1;
-        width: 3px;
-        height: 3px;
-        border-radius: 50%;
-        background: radial-gradient(circle, #fffbe6 60%, #ffe066 100%, transparent 100%);
-        opacity: 0.85;
-        animation: sparkle-float 4.5s cubic-bezier(0.4,0,0.2,1) forwards, sparkle-fade 4.5s linear forwards;
-        box-shadow: 0 0 8px 2px #fffbe6, 0 0 16px 4px #ffe06655;
-        will-change: transform, opacity;
-    }
-
-         @keyframes sparkle-float {
-        0% {
-            transform: translateY(0) scale(1);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: "Georgia", serif;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            overflow: hidden;
         }
-        100% {
-            transform: translateY(-120px) scale(1.3);
-        }
-    }
 
-    @keyframes sparkle-fade {
-        0% { opacity: 0; }
-        10% { opacity: 0.85; }
-        80% { opacity: 0.85; }
-        100% { opacity: 0; }
-    }
-
-        .overlay {
-            position: absolute;
+        /* พื้นหลังเต็มหน้า */
+        .bg {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
+            background: url("pics/Poster for edit 2.png") no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+            /* อยู่ข้างหลังสุด */
+        }
+
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fffbe6 60%, #ffe066 100%, transparent 100%);
+            opacity: 0.85;
+            animation: sparkle-float 4.5s cubic-bezier(0.4, 0, 0.2, 1) forwards, sparkle-fade 4.5s linear forwards;
+            box-shadow: 0 0 8px 2px #fffbe6, 0 0 16px 4px #ffe06655;
+            will-change: transform, opacity;
+        }
+
+        @keyframes sparkle-float {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+
+            100% {
+                transform: translateY(-120px) scale(1.3);
+            }
+        }
+
+        @keyframes sparkle-fade {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.85;
+            }
+
+            80% {
+                opacity: 0.85;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
 
         .overlay {
@@ -84,7 +89,6 @@
             position: relative;
             z-index: 1;
             transform: translateY(-200px);
-            /* ขยับโลโก้ขึ้น */
         }
 
         .logo-box img {
@@ -99,7 +103,6 @@
             transform: translateY(170px);
             color: rgb(255, 255, 255);
             text-shadow: 0 0 15px gold, 0 0 30px white;
-            
         }
 
         #join-text {
@@ -107,7 +110,7 @@
             margin: 0;
             text-shadow: 0 0 15px gold, 0 0 30px white;
             font-family: sans-serif;
-           animation: blink 1.5s infinite;
+            animation: blink 1.5s infinite;
         }
 
         @keyframes blink {
@@ -122,24 +125,32 @@
             }
         }
 
-        html, body {
-        overflow: hidden;
-    }
-    @media (max-width: 390px), (max-height: 844px) {
-        body {
-            width: 100vw;
-            height: 100vh;
-            min-width: unset;
-            min-height: unset;
-            max-width: unset;
-            max-height: unset;
-            background-size: 100vw 100vh;
+        @media (min-width: 768px) {
+            #join-text {
+                font-size: 3vw;
+            }
+
+            .logo-box img {
+                max-width: 40%;
+            }
         }
-    }
+
+        @media (min-width: 1024px) {
+            #join-text {
+                font-size: 2.5rem;
+            }
+
+            .logo-box img {
+                max-width: 300px;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <!-- BG เต็มหน้า -->
+    <div class="bg"></div>
+
     <div class="overlay"></div>
 
     <div id="sparkle-container"></div>
@@ -163,38 +174,38 @@
                 window.location.href = 'register.html';
             }, 800);
         });
+
         const sparkleContainer = document.getElementById('sparkle-container');
-            const sparkleCount = 28;
-            function randomBetween(a, b) {
-                return Math.random() * (b - a) + a;
+        const sparkleCount = 28;
+        function randomBetween(a, b) {
+            return Math.random() * (b - a) + a;
+        }
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            const centerX = vw / 2;
+            const centerY = vh / 2;
+            const radius = randomBetween(80, 260);
+            const angle = randomBetween(0, 2 * Math.PI);
+            const x = centerX + radius * Math.cos(angle) - 1.5;
+            const y = centerY + radius * Math.sin(angle) - 1.5 + randomBetween(-60, 60);
+            sparkle.style.left = `${x}px`;
+            sparkle.style.top = `${y}px`;
+            sparkle.style.animationDelay = `${randomBetween(0, 2.5)}s`;
+            sparkleContainer.appendChild(sparkle);
+            sparkle.addEventListener('animationend', () => {
+                sparkle.remove();
+            });
+        }
+        function loopSparkles() {
+            for (let i = 0; i < sparkleCount; i++) {
+                setTimeout(createSparkle, randomBetween(0, 2000));
             }
-            function createSparkle() {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-                const vw = window.innerWidth;
-                const vh = window.innerHeight;
-                const centerX = vw / 2;
-                const centerY = vh / 2;
-                const radius = randomBetween(80, 260);
-                const angle = randomBetween(0, 2 * Math.PI);
-                const x = centerX + radius * Math.cos(angle) - 1.5;
-                const y = centerY + radius * Math.sin(angle) - 1.5 + randomBetween(-60, 60);
-                sparkle.style.left = `${x}px`;
-                sparkle.style.top = `${y}px`;
-                sparkle.style.animationDelay = `${randomBetween(0, 2.5)}s`;
-                sparkleContainer.appendChild(sparkle);
-                // ลบ sparkle เมื่อจบ animation เพื่อความสมูท
-                sparkle.addEventListener('animationend', () => {
-                    sparkle.remove();
-                });
-            }
-            function loopSparkles() {
-                for (let i = 0; i < sparkleCount; i++) {
-                    setTimeout(createSparkle, randomBetween(0, 2000));
-                }
-            }
-            loopSparkles();
-            setInterval(loopSparkles, 2000);
+        }
+        loopSparkles();
+        setInterval(loopSparkles, 2000);
     </script>
 </body>
 

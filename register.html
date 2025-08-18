@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบฟอร์มลงทะเบียน</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <style>
+        /* พื้นหลังเต็มจอ */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', sans-serif;
+            background: url('pics/Poster\ for\ edit\ 2.png') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color-scheme:white ;
+            opacity: 0.5;
+            
+        }
+
+        /* กล่องฟอร์ม */
+        .form-container {
+            background: rgba(0, 0, 0, 0);
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            /* ไม่เกินนี้ในจอใหญ่ */
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0);
+            margin-top: -50px;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 0px;
+            
+            
+        }
+
+        label {
+            display: block;
+            margin: 8px 0 4px;
+            font-size: 14px;
+            color: aliceblue;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            margin-top: 20px;
+            border-radius: 10px;
+            background: #ffcc00;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #ffaa00;
+        }
+
+        @media (max-height: 600px) {
+            body {
+                align-items: flex-start;
+                /* กันไม่ให้ฟอร์มโดนตัด */
+                padding-top: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>ลงทะเบียน</h2>
+        <form id="registerForm">
+            <label>ชื่อ - นามสกุล</label>
+            <input type="text" id="fullname" required placeholder="วิทยา ทาสีธง">
+
+            <label>ชื่อเล่น</label>
+            <input type="text" id="nickname" required placeholder="วิท">
+
+            <label>อายุ</label>
+            <input type="number" id="age"  pattern="[0-9]{10}" maxlength="10" requiredrequired placeholder="1000ล้านปี">
+
+            <label>เพศ</label>
+            <select id="gender" required>
+                <option value=""> เลือกเพศ </option>
+                <option value="ชาย">ชาย</option>
+                <option value="หญิง">หญิง</option>
+                <option value="อื่นๆ">ตัวเเม่สิคะ</option>
+            </select>
+
+            <label>ระดับชั้น</label>
+            <select id="grade" required>
+                <option value="">เลือกระดับชั้น </option>
+                <option value="มัธยมต้น">มัธยมต้น</option>
+                <option value="มัธยมปลาย">มัธยมปลาย</option>
+                <option value="มหาวิทยาลัย">มหาวิทยาลัย</option>
+                <option value="ปวช/ปวส">ปวช/ปวส</option>
+            </select>
+
+            <label>จังหวัด</label>
+            <select id="province" required>
+                <option value="">เลือกจังหวัด</option>
+                <option>กรุงเทพมหานคร</option>
+                <option>กระบี่</option>
+                <option>กาญจนบุรี</option>
+                <option>กาฬสินธุ์</option>
+                <option>กำแพงเพชร</option>
+                <option>ขอนแก่น</option>
+                <option>จันทบุรี</option>
+                <option>ฉะเชิงเทรา</option>
+                <option>ชลบุรี</option>
+                <option>ชัยนาท</option>
+                <option>ชัยภูมิ</option>
+                <option>ชุมพร</option>
+                <option>เชียงราย</option>
+                <option>เชียงใหม่</option>
+                <option>ตรัง</option>
+                <option>ตราด</option>
+                <option>ตาก</option>
+                <option>นครนายก</option>
+                <option>นครปฐม</option>
+                <option>นครพนม</option>
+                <option>นครราชสีมา</option>
+                <option>นครศรีธรรมราช</option>
+                <option>นครสวรรค์</option>
+                <option>นนทบุรี</option>
+                <option>นราธิวาส</option>
+                <option>น่าน</option>
+                <option>บึงกาฬ</option>
+                <option>บุรีรัมย์</option>
+                <option>ประจวบคีรีขันธ์</option>
+                <option>ปราจีนบุรี</option>
+                <option>ปทุมธานี</option>
+                <option>พระนครศรีอยุธยา</option>
+                <option>พังงา</option>
+                <option>พัทลุง</option>
+                <option>พิจิตร</option>
+                <option>พิษณุโลก</option>
+                <option>เพชรบุรี</option>
+                <option>เพชรบูรณ์</option>
+                <option>แพร่</option>
+                <option>ภูเก็ต</option>
+                <option>มหาสารคาม</option>
+                <option>มุกดาหาร</option>
+                <option>แม่ฮ่องสอน</option>
+                <option>ยโสธร</option>
+                <option>ยะลา</option>
+                <option>ร้อยเอ็ด</option>
+                <option>ระนอง</option>
+                <option>ระยอง</option>
+                <option>ราชบุรี</option>
+                <option>ลพบุรี</option>
+                <option>ลำปาง</option>
+                <option>ลำพูน</option>
+                <option>ศรีสะเกษ</option>
+                <option>สกลนคร</option>
+                <option>สงขลา</option>
+                <option>สตูล</option>
+                <option>สมุทรปราการ</option>
+                <option>สมุทรสงคราม</option>
+                <option>สมุทรสาคร</option>
+                <option>สระแก้ว</option>
+                <option>สระบุรี</option>
+                <option>สิงห์บุรี</option>
+                <option>สุโขทัย</option>
+                <option>สุพรรณบุรี</option>
+                <option>สุราษฎร์ธานี</option>
+                <option>สุรินทร์</option>
+                <option>หนองคาย</option>
+                <option>หนองบัวลำภู</option>
+                <option>อ่างทอง</option>
+                <option>อำนาจเจริญ</option>
+                <option>อุดรธานี</option>
+                <option>อุตรดิตถ์</option>
+                <option>อุทัยธานี</option>
+                <option>อุบลราชธานี</option>
+
+                
+            </select>
+
+            <label>เบอร์โทรศัพท์</label>
+            <input type="tel" id="phone" pattern="[0-9]{10}" maxlength="10" required placeholder="ตัวเลข 10 หลัก">
+
+            <button type="submit">ส่งข้อมูล</button>
+        </form>
+    </div>
+
+    <script>
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "cdebuopenhouse.firebaseapp.com",
+            projectId: "cdebuopenhouse",
+            storageBucket: "cdebuopenhouse.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdefghijklmno",
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Event submit
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const data = {
+                fullname: document.getElementById("fullname").value,
+                nickname: document.getElementById("nickname").value,
+                age: document.getElementById("age").value,
+                gender: document.getElementById("gender").value,
+                grade: document.getElementById("grade").value,
+                province: document.getElementById("province").value,
+                phone: document.getElementById("phone").value,
+                timestamp: new Date()
+            };
+
+             try {
+                await db.collection("registrations").add(data);
+                alert("บันทึกข้อมูลเรียบร้อย ✨");
+                document.getElementById("registerForm").reset();
+                window.location.href = "quiz.html"; // เพิ่มบรรทัดนี้เพื่อไปหน้า quiz
+            } catch (err) {
+                console.error("Error adding document: ", err);
+                alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+            }
+        });
+        
+
+    </script>
+</body>
+
+</html>

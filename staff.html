@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Scanner & Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #121212;
+            color: #f5f5f5;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #ffd369;
+        }
+
+        .dashboard {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(255, 211, 105, 0.5);
+        }
+
+        .dashboard p {
+            margin: 5px;
+            font-size: 1rem;
+        }
+
+        video {
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid #ffd369;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 211, 105, 0.5);
+        }
+
+        .btn {
+            padding: 12px 26px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1.1rem;
+        }
+
+        .btn-in {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-out {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        #status {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>📊 Staff Dashboard & QR Scanner</h1>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <p>👥 อยู่ในงานตอนนี้: <span id="currentCount">0</span> / 30</p>
+        <p>✅ เข้าสะสม: <span id="totalIn">0</span></p>
+        <p>🚪 ออกสะสม: <span id="totalOut">0</span></p>
+    </div>
+
+    <p>สแกน QR Code ของผู้เข้าร่วมงาน</p>
+    <video id="camera" autoplay></video>
+    <canvas id="canvas" hidden></canvas>
+
+    <!-- Result -->
+    <div class="result-box" id="result-box" style="display:none;">
+        <h2>QR ที่สแกนได้:</h2>
+        <p id="qr-result"></p>
+        <button class="btn btn-in" onclick="updateStatus('IN')">✅ เข้า</button>
+        <button class="btn btn-out" onclick="updateStatus('OUT')">🚪 ออก</button>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        const video = document.getElementById("camera");
+        const canvasElement = document.getElementById("canvas");
+        const canvas = canvasElement.getContext("2d");
+        const resultBox = document.getElementById("result-box");
+        const qrResult = document.getElementById("qr-result");
+        const statusMsg = document.getElementById("status");
+
+        let currentUserId = "";
+        let scanningLocked = false; // 🔒 กันการสแกนซ้ำ
+
+        // ✅ เปิดกล้อง
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+            .then(function (stream) {
+                video.srcObject = stream;
+                video.setAttribute("playsinline", true); // iOS
+                video.play();
+                requestAnimationFrame(scanQR);
+            });
+
+        // ✅ ฟังก์ชันสแกน
+        function scanQR() {
+            if (video.readyState === video.HAVE_ENOUGH_DATA && !scanningLocked) {
+                canvasElement.width = video.videoWidth;
+                canvasElement.height = video.videoHeight;
+                canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+                const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" });
+
+                if (code) {
+                    currentUserId = code.data;
+                    qrResult.innerText = currentUserId;
+                    resultBox.style.display = "block";
+                    scanningLocked = true; // 🔒 ล็อคไม่ให้สแกนซ้ำ
+                }
+            }
+            requestAnimationFrame(scanQR);
+        }
+
+        // ✅ อัปเดตสถานะเข้า/ออกไป Google Sheets
+        function updateStatus(status) {
+            if (!currentUserId) return;
+            statusMsg.innerText = "⏳ กำลังบันทึก...";
+
+            fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+                method: "POST",
+                body: JSON.stringify({
+                    userId: currentUserId,
+                    status: status,
+                    timestamp: new Date().toISOString()
+                }),
+                headers: { "Content-Type": "application/json" }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    statusMsg.innerText = "✅ บันทึกเรียบร้อย (" + status + ")";
+                    updateDashboard(); // รีเฟรช Dashboard
+                    setTimeout(() => {
+                        resultBox.style.display = "none";
+                        currentUserId = "";
+                        scanningLocked = false; // 🔓 ปลดล็อคเพื่อสแกนใหม่
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error(err);
+                    statusMsg.innerText = "❌ เกิดข้อผิดพลาด";
+                    scanningLocked = false;
+                });
+        }
+
+        // ✅ โหลด Dashboard จาก Google Sheets
+        function updateDashboard() {
+            fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?action=stats")
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("currentCount").innerText = data.currentCount || 0;
+                    document.getElementById("totalIn").innerText = data.totalIn || 0;
+                    document.getElementById("totalOut").innerText = data.totalOut || 0;
+                });
+        }
+
+        // โหลด Dashboard ทุก 10 วินาที
+        setInterval(updateDashboard, 10000);
+        updateDashboard();
+    </script>
+</body>
+
+</html>

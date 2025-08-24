@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', sans-serif;
+            background: url('pics/Poster for edit 2.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .quiz-container {
+            position: relative;
+            width: 95vw;
+            max-width: 460px;
+        }
+
+        .quiz-container img.main {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ภาพประกอบตรงกลาง */
+        .illustration {
+            position: absolute;
+            top: 32%;
+            /* เลื่อนขึ้นลงตามต้องการ */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            /* ปรับขนาดได้ */
+            height: auto;
+            z-index: 2;
+        }
+
+        /* ปุ่ม overlay */
+        .option-btn {
+            position: absolute;
+            width: 42%;
+            height: 9%;
+            background: rgba(255, 0, 0, 0);
+            /* debug */
+            border: none;
+            cursor: pointer;
+        }
+
+        /* ตำแหน่งปุ่ม */
+        .opt1 {
+            top: 60%;
+            left: 6%;
+        }
+
+        /* ชมรมต่อสู้ */
+        .opt2 {
+            top: 60%;
+            right: 6%;
+        }
+
+        /* ชมรมปรุงยา */
+        .opt3 {
+            top: 73%;
+            left: 6%;
+        }
+
+        /* ชมรมการแสดง */
+        .opt4 {
+            top: 73%;
+            right: 6%;
+        }
+
+        /* ชมรมวิจัยเวทมนตร์ */
+    </style>
+</head>
+
+<body>
+
+    <div class="quiz-container">
+        <!-- ภาพรวม -->
+        <img src="pics/ans+ques4.png" alt="Question 1" class="main">
+
+        <!-- ภาพประกอบที่แปะตรงกลาง -->
+        <img src="pics/illustration.png" alt="illustration" class="illustration">
+
+        <!-- ปุ่ม overlay -->
+        <button class="option-btn opt1" onclick="selectAnswer(1)"></button>
+        <button class="option-btn opt2" onclick="selectAnswer(2)"></button>
+        <button class="option-btn opt3" onclick="selectAnswer(3)"></button>
+        <button class="option-btn opt4" onclick="selectAnswer(4)"></button>
+    </div>
+
+    <script>
+        function selectAnswer(option) {
+            // ถ้าอยากส่งค่าตัวเลือกไปด้วย ก็สามารถเก็บใน query string
+            window.location.href = "result.html?answer=" + option;
+        }
+    </script>
+
+</body>

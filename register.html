@@ -8,7 +8,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <style>
-    /* พื้นหลังเต็มจอ */
     body {
       margin: 0;
       padding: 0;
@@ -21,21 +20,21 @@
       min-height: 100vh;
       color: #fff;
     }
-  
+
     .form-container {
       width: 90%;
       max-width: 500px;
       text-align: center;
       margin-top: -8vh;
     }
-  
+
     .form-container h2 {
       font-size: 22px;
       margin-bottom: 20px;
       font-weight: bold;
       text-shadow: 0 0 10px rgba(255, 255, 200, 0.9);
     }
-  
+
     label {
       display: block;
       text-align: left;
@@ -43,7 +42,7 @@
       font-size: 14px;
       font-weight: bold;
     }
-  
+
     input,
     select {
       width: 100%;
@@ -57,26 +56,26 @@
       box-shadow: inset 0 0 5px rgba(255, 200, 120, 0.5);
       margin-bottom: 15px;
     }
-  
+
     input::placeholder {
       color: rgba(255, 255, 255, 0.7);
     }
-  
+
     select {
       appearance: none;
       cursor: pointer;
     }
-  
+
     .form-row {
       display: flex;
       gap: 10px;
     }
-  
+
     .form-row input,
     .form-row select {
       flex: 1;
     }
-  
+
     button {
       background: linear-gradient(180deg, #ffd85c, #d4a017);
       border: 0px solid #fff3b0;
@@ -90,12 +89,12 @@
       margin-top: 10px;
       width: 100%;
     }
-  
+
     button:hover {
       transform: scale(1.05);
       box-shadow: 0 0 25px rgba(255, 220, 100, 1);
     }
-  
+
     @media (max-width: 480px) {
       .form-row {
         flex-direction: column;
@@ -159,37 +158,47 @@
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const data = {
-        action: "register",
-        fullname: document.getElementById("fullname").value,
-        nickname: document.getElementById("nickname").value,
-        gender: document.getElementById("gender").value,
-        age: document.getElementById("age").value,
-        grade: document.getElementById("grade").value,
-        province: document.getElementById("province").value,
-        phone: document.getElementById("phone").value
-      };
+      const fullname = document.getElementById("fullname").value;
+      const nickname = document.getElementById("nickname").value;
+      const gender = document.getElementById("gender").value;
+      const age = document.getElementById("age").value;
+      const grade = document.getElementById("grade").value;
+      const province = document.getElementById("province").value;
+      const phone = document.getElementById("phone").value;
+
+      const params = new URLSearchParams();
+      params.append("action", "register");
+      params.append("fullname", fullname);
+      params.append("nickname", nickname);
+      params.append("gender", gender);
+      params.append("age", age);
+      params.append("grade", grade);
+      params.append("province", province);
+      params.append("phone", phone);
 
       try {
-        const res = await fetch("https://script.google.com/macros/s/AKfycbzrE7M-5ehCGSKMOi-KtzP9EpS8uWzBiY5KcwGWAqWqRLlqSwPJ_K-wmHWAG2t1E8_Dkw/exec", { // 👈 ใส่ลิงก์ Apps Script Web App ตรงนี้
+        const res = await fetch("https://script.google.com/macros/s/AKfycbyQe3NqYYFerRPZMZrITSjGzWhq-SQOJHYcOKJ0-7w5pLQjcXAHOrREz3Bm6x1FFt1ZNg/exec", {
           method: "POST",
-          body: JSON.stringify(data),
-          headers: { "Content-Type": "application/json" }
+          body: params
         });
 
-        const result = await res.json();
-        if (result.result === "success") {
-          localStorage.setItem("userId", result.userId); // เก็บ userId ไว้ใช้สร้าง QR code
-          window.location.href = "quiz1.html"; // ไปหน้า quiz ต่อ
+        const data = await res.json();
+        if (data.result === "success") {
+          // ✅ เก็บ userId ใน localStorage
+          localStorage.setItem("userId", data.userId);
+
+          // ✅ ไปหน้า quiz1 ต่อ
+          window.location.href = "quiz1.html";
         } else {
-          alert("เกิดข้อผิดพลาดในการลงทะเบียน");
+          alert("บันทึกไม่สำเร็จ: " + data.result);
         }
       } catch (err) {
-        console.error(err);
-        alert("ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้");
+        console.error("Error:", err);
+        alert("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์");
       }
     });
   </script>
+
 </body>
 
 </html>

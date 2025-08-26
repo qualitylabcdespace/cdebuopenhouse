@@ -155,46 +155,37 @@
   </div>
 
   <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJu2MFOEWWU1x0rfuRWOVYGawTfOW4ESev7fCFQ9Et1WmikErVqbjVvAbMrC1aXG0xIQ/exec";
+
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const fullname = document.getElementById("fullname").value;
-      const nickname = document.getElementById("nickname").value;
-      const gender = document.getElementById("gender").value;
-      const age = document.getElementById("age").value;
-      const grade = document.getElementById("grade").value;
-      const province = document.getElementById("province").value;
-      const phone = document.getElementById("phone").value;
-
-      const params = new URLSearchParams();
-      params.append("action", "register");
-      params.append("fullname", fullname);
-      params.append("nickname", nickname);
-      params.append("gender", gender);
-      params.append("age", age);
-      params.append("grade", grade);
-      params.append("province", province);
-      params.append("phone", phone);
+      const data = {
+        action: "register",
+        fullname: document.getElementById("fullname").value,
+        nickname: document.getElementById("nickname").value,
+        gender: document.getElementById("gender").value,
+        age: document.getElementById("age").value,
+        grade: document.getElementById("grade").value,
+        province: document.getElementById("province").value,
+        phone: document.getElementById("phone").value,
+      };
 
       try {
-        const res = await fetch("https://script.google.com/macros/s/AKfycbyQe3NqYYFerRPZMZrITSjGzWhq-SQOJHYcOKJ0-7w5pLQjcXAHOrREz3Bm6x1FFt1ZNg/exec", {
+        const res = await fetch(SCRIPT_URL, {
           method: "POST",
-          body: params
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(data),
         });
 
-        const data = await res.json();
-        if (data.result === "success") {
-          // ✅ เก็บ userId ใน localStorage
-          localStorage.setItem("userId", data.userId);
-
-          // ✅ ไปหน้า quiz1 ต่อ
-          window.location.href = "quiz1.html";
+        const result = await res.json();
+        if (result.result === "success") {
+          alert("ลงทะเบียนสำเร็จ! รหัสผู้ใช้: " + result.userId);
         } else {
-          alert("บันทึกไม่สำเร็จ: " + data.result);
+          alert("เกิดข้อผิดพลาด: " + JSON.stringify(result));
         }
       } catch (err) {
-        console.error("Error:", err);
-        alert("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์");
+        alert("เชื่อมต่อไม่สำเร็จ: " + err.message);
       }
     });
   </script>

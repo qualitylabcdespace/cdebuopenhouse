@@ -5,8 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>แบบฟอร์มลงทะเบียน</title>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <style>
     body {
       margin: 0;
@@ -155,14 +153,15 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_-Vd4P1LQHSjKmm2IDetWG89Budw5CH6EqM_iFbHsENlpYdjpSqH1vimIGDmxLdFM/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9fSqFbqajanGswZAC-zHA1wGqkCX5mTZbXN7rsFoDmtGSC3KOEXIBn0iW5vS9YYz5aA/exec";
 
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const data = {
-        fullname: document.getElementById("fullName").value,
-        nickname: document.getElementById("nickName").value,
+        action: "register",  // ✅ เพิ่ม action ให้ App Script แยกได้
+        fullname: document.getElementById("fullname").value,
+        nickname: document.getElementById("nickname").value,
         gender: document.getElementById("gender").value,
         age: document.getElementById("age").value,
         grade: document.getElementById("grade").value,
@@ -171,7 +170,7 @@
       };
 
       try {
-        const res = await fetch(SCRIPT_URL + "?action=register", {
+        const res = await fetch(SCRIPT_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -179,20 +178,17 @@
 
         const result = await res.json();
         if (result.success) {
-          alert("ลงทะเบียนสำเร็จ! รหัสผู้ใช้: " + result.userId);
-          // ✅ เพิ่ม redirect หลังลงทะเบียน
+          alert("✅ ลงทะเบียนสำเร็จ! รหัสผู้ใช้: " + result.userId);
+          // ไปหน้า quiz1.html หลังสมัครเสร็จ
           window.location.href = "quiz1.html";
         } else {
-          alert("เกิดข้อผิดพลาด: " + JSON.stringify(result));
+          alert("⚠️ เกิดข้อผิดพลาด: " + JSON.stringify(result));
         }
       } catch (err) {
-        alert("เชื่อมต่อไม่สำเร็จ: " + err.message);
+        alert("❌ เชื่อมต่อไม่สำเร็จ: " + err.message);
       }
     });
   </script>
-
-
-
 </body>
 
 </html>

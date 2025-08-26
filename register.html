@@ -155,15 +155,15 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwIy24-h4SqoeeTBVzdJHa0U5yasdtrAkj3TNXFpLsZG4NDJqTW7yqALjRX3aEtfjhXrQ/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKwROvdYN1kJ0ydDKP5dtiakUBRI0abuGskqT1JyD48aQSfAQHxcRTBqug0EuNe7k1/exec";
 
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const data = {
-        action: "register",
-        fullname: document.getElementById("fullname").value,
-        nickname: document.getElementById("nickname").value,
+        action: "register",  // ✅ บอก App Script ว่านี่คือการลงทะเบียน
+        fullname: document.getElementById("fullName").value,
+        nickname: document.getElementById("nickName").value,
         gender: document.getElementById("gender").value,
         age: document.getElementById("age").value,
         grade: document.getElementById("grade").value,
@@ -174,12 +174,12 @@
       try {
         const res = await fetch(SCRIPT_URL, {
           method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams(data),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
         });
 
         const result = await res.json();
-        if (result.result === "success") {
+        if (result.success) {
           alert("ลงทะเบียนสำเร็จ! รหัสผู้ใช้: " + result.userId);
         } else {
           alert("เกิดข้อผิดพลาด: " + JSON.stringify(result));
@@ -189,6 +189,7 @@
       }
     });
   </script>
+
 
 </body>
 

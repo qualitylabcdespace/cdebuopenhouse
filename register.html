@@ -155,13 +155,12 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKwROvdYN1kJ0ydDKP5dtiakUBRI0abuGskqT1JyD48aQSfAQHxcRTBqug0EuNe7k1/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_-Vd4P1LQHSjKmm2IDetWG89Budw5CH6EqM_iFbHsENlpYdjpSqH1vimIGDmxLdFM/exec";
 
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const data = {
-        action: "register",  // ✅ บอก App Script ว่านี่คือการลงทะเบียน
         fullname: document.getElementById("fullName").value,
         nickname: document.getElementById("nickName").value,
         gender: document.getElementById("gender").value,
@@ -172,7 +171,7 @@
       };
 
       try {
-        const res = await fetch(SCRIPT_URL, {
+        const res = await fetch(SCRIPT_URL + "?action=register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -181,6 +180,8 @@
         const result = await res.json();
         if (result.success) {
           alert("ลงทะเบียนสำเร็จ! รหัสผู้ใช้: " + result.userId);
+          // ✅ เพิ่ม redirect หลังลงทะเบียน
+          window.location.href = "quiz1.html";
         } else {
           alert("เกิดข้อผิดพลาด: " + JSON.stringify(result));
         }
@@ -189,6 +190,7 @@
       }
     });
   </script>
+
 
 
 </body>

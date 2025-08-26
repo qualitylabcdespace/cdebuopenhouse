@@ -158,22 +158,20 @@
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const data = {
-        action: "register",  // ✅ เพิ่ม action ให้ App Script แยกได้
-        fullname: document.getElementById("fullname").value,
-        nickname: document.getElementById("nickname").value,
-        gender: document.getElementById("gender").value,
-        age: document.getElementById("age").value,
-        grade: document.getElementById("grade").value,
-        province: document.getElementById("province").value,
-        phone: document.getElementById("phone").value,
-      };
+      const formData = new URLSearchParams();
+      formData.append("action", "register");
+      formData.append("fullname", document.getElementById("fullname").value);
+      formData.append("nickname", document.getElementById("nickname").value);
+      formData.append("gender", document.getElementById("gender").value);
+      formData.append("age", document.getElementById("age").value);
+      formData.append("grade", document.getElementById("grade").value);
+      formData.append("province", document.getElementById("province").value);
+      formData.append("phone", document.getElementById("phone").value);
 
       try {
         const res = await fetch(SCRIPT_URL, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          body: formData,
         });
 
         const result = await res.json();
@@ -189,6 +187,7 @@
       }
     });
   </script>
+
 </body>
 
 </html>

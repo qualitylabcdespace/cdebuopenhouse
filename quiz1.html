@@ -33,11 +33,11 @@
         /* ภาพประกอบตรงกลาง */
         .illustration {
             position: absolute;
-            top: 32%;
+            top: 26%;
             /* เลื่อนขึ้นลงตามต้องการ */
             left: 50%;
             transform: translateX(-50%);
-            width: 40%;
+            width: 60%;
             /* ปรับขนาดได้ */
             height: auto;
             z-index: 2;
@@ -77,32 +77,56 @@
             top: 73%;
             right: 6%;
         }
+ .fade-in {
+      animation: fadeIn 0.6s ease-in forwards;
+    }
 
-        /* ชมรมวิจัยเวทมนตร์ */
-    </style>
+    .fade-out {
+      animation: fadeOut 0.6s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="quiz-container">
+    <!-- ภาพรวม -->
+    <img src="pics/ans+ques.png" alt="Question 1" class="main">
 
-    <div class="quiz-container">
-        <!-- ภาพรวม -->
-        <img src="pics/ans+ques.png" alt="Question 1" class="main">
+    <!-- ภาพประกอบที่แปะตรงกลาง -->
+    <img src="pics/comrom.png" alt="illustration" class="illustration">
 
-        <!-- ภาพประกอบที่แปะตรงกลาง -->
-        <img src="pics/illustration.png" alt="illustration" class="illustration">
+    <!-- ปุ่ม overlay -->
+    <button class="option-btn opt1" onclick="selectAnswer(1)"></button>
+    <button class="option-btn opt2" onclick="selectAnswer(2)"></button>
+    <button class="option-btn opt3" onclick="selectAnswer(3)"></button>
+    <button class="option-btn opt4" onclick="selectAnswer(4)"></button>
+  </div>
 
-        <!-- ปุ่ม overlay -->
-        <button class="option-btn opt1" onclick="selectAnswer(1)"></button>
-        <button class="option-btn opt2" onclick="selectAnswer(2)"></button>
-        <button class="option-btn opt3" onclick="selectAnswer(3)"></button>
-        <button class="option-btn opt4" onclick="selectAnswer(4)"></button>
-    </div>
+  <script>
+    // ✅ Fade-in ตอนโหลดหน้า
+    document.addEventListener("DOMContentLoaded", () => {
+        document.body.classList.add("fade-in");
+    });
 
-    <script>
-        function selectAnswer(option) {
-            // ถ้าอยากส่งค่าตัวเลือกไปด้วย ก็สามารถเก็บใน query string
+    // ✅ เมื่อเลือกคำตอบ → fade-out แล้วค่อยเปลี่ยนหน้า
+    function selectAnswer(option) {
+        document.body.classList.remove("fade-in");
+        document.body.classList.add("fade-out");
+
+        setTimeout(() => {
             window.location.href = "quiz2.html?answer=" + option;
-        }
-    </script>
-
+        }, 600); // ตรงกับเวลา fadeOut
+    }
+</script>
 </body>
+</html>

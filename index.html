@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Lumora School of Magic</title>
     <style>
+
+         @font-face {
+            font-family: 'SukhumvitSetBold';
+            src: url('sukhumvit-set-bold.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -14,7 +22,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: "Georgia", serif;
+           
             color: white;
             text-align: center;
             cursor: pointer;
@@ -110,9 +118,31 @@
             font-size: 3.5vw;
             margin: 0;
             text-shadow: 0 0 15px gold, 0 0 30px white;
-            font-family: sans-serif;
+            font-family: 'SukhumvitSetBold', sans-serif;
             animation: blink 1.5s infinite;
         }
+        /* เริ่มหน้าใหม่แบบจาง */
+.fade-in {
+  animation: fadeIn 0.6s ease-in forwards;
+}
+
+/* จางหายไป */
+.fade-out {
+  animation: fadeOut 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+
+        
 
         @keyframes blink {
 
@@ -166,48 +196,61 @@
         <h1 id="join-text">Join Us</h1>
     </div>
 
-    <script>
-        // คลิกที่ไหนก็ไปหน้า register.html
-        document.body.addEventListener('click', () => {
-            document.body.style.transition = "opacity 0.8s";
-            document.body.style.opacity = "0";
-            setTimeout(() => {
-                window.location.href = 'register.html';
-            }, 800);
-        });
+  <script>
+    // ทำให้ทุกหน้ามี fade-in ตอนโหลด
+    document.addEventListener("DOMContentLoaded", () => {
+        document.body.classList.add("fade-in");
+    });
 
-        const sparkleContainer = document.getElementById('sparkle-container');
-        const sparkleCount = 28;
-        function randomBetween(a, b) {
-            return Math.random() * (b - a) + a;
+    // คลิกตรงไหนก็เฟดออกแล้วไปหน้า register.html
+    document.body.addEventListener("click", () => {
+        document.body.classList.remove("fade-in");
+        document.body.classList.add("fade-out");
+
+        setTimeout(() => {
+            window.location.href = "register.html";
+        }, 600); // ระยะเวลาเดียวกับ animation fadeOut
+    });
+
+    // เอฟเฟกต์ประกาย (sparkle)
+    const sparkleContainer = document.getElementById("sparkle-container");
+    const sparkleCount = 28;
+
+    function randomBetween(a, b) {
+        return Math.random() * (b - a) + a;
+    }
+
+    function createSparkle() {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const centerX = vw / 2;
+        const centerY = vh / 2;
+        const radius = randomBetween(80, 260);
+        const angle = randomBetween(0, 2 * Math.PI);
+        const x = centerX + radius * Math.cos(angle) - 1.5;
+        const y = centerY + radius * Math.sin(angle) - 1.5 + randomBetween(-60, 60);
+        sparkle.style.left = `${x}px`;
+        sparkle.style.top = `${y}px`;
+        sparkle.style.animationDelay = `${randomBetween(0, 2.5)}s`;
+        sparkleContainer.appendChild(sparkle);
+        sparkle.addEventListener("animationend", () => {
+            sparkle.remove();
+        });
+    }
+
+    function loopSparkles() {
+        for (let i = 0; i < sparkleCount; i++) {
+            setTimeout(createSparkle, randomBetween(0, 2000));
         }
-        function createSparkle() {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
-            const vw = window.innerWidth;
-            const vh = window.innerHeight;
-            const centerX = vw / 2;
-            const centerY = vh / 2;
-            const radius = randomBetween(80, 260);
-            const angle = randomBetween(0, 2 * Math.PI);
-            const x = centerX + radius * Math.cos(angle) - 1.5;
-            const y = centerY + radius * Math.sin(angle) - 1.5 + randomBetween(-60, 60);
-            sparkle.style.left = `${x}px`;
-            sparkle.style.top = `${y}px`;
-            sparkle.style.animationDelay = `${randomBetween(0, 2.5)}s`;
-            sparkleContainer.appendChild(sparkle);
-            sparkle.addEventListener('animationend', () => {
-                sparkle.remove();
-            });
-        }
-        function loopSparkles() {
-            for (let i = 0; i < sparkleCount; i++) {
-                setTimeout(createSparkle, randomBetween(0, 2000));
-            }
-        }
-        loopSparkles();
-        setInterval(loopSparkles, 2000);
-    </script>
+    }
+
+    loopSparkles();
+    setInterval(loopSparkles, 2000);
+</script>
+
+
 </body>
 
 </html>

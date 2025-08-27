@@ -31,13 +31,13 @@
         }
 
         /* ภาพประกอบตรงกลาง */
-        .illustration {
+       .illustration {
             position: absolute;
-            top: 32%;
+            top: 26%;
             /* เลื่อนขึ้นลงตามต้องการ */
             left: 50%;
             transform: translateX(-50%);
-            width: 40%;
+            width: 60%;
             /* ปรับขนาดได้ */
             height: auto;
             z-index: 2;
@@ -77,7 +77,23 @@
             top: 73%;
             right: 6%;
         }
+              .fade-in {
+      animation: fadeIn 0.6s ease-in forwards;
+    }
 
+    .fade-out {
+      animation: fadeOut 0.6s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
         /* ชมรมวิจัยเวทมนตร์ */
     </style>
 </head>
@@ -89,7 +105,7 @@
         <img src="pics/ans+ques4.png" alt="Question 1" class="main">
 
         <!-- ภาพประกอบที่แปะตรงกลาง -->
-        <img src="pics/illustration.png" alt="illustration" class="illustration">
+        <img src="pics/thong.png" alt="illustration" class="illustration">
 
         <!-- ปุ่ม overlay -->
         <button class="option-btn opt1" onclick="selectAnswer(1)"></button>
@@ -99,9 +115,18 @@
     </div>
 
     <script>
+       document.addEventListener("DOMContentLoaded", () => {
+            document.body.classList.add("fade-in");
+        });
+
+        // ✅ เมื่อเลือกคำตอบ → fade-out แล้วค่อยเปลี่ยนหน้า
         function selectAnswer(option) {
-            // ถ้าอยากส่งค่าตัวเลือกไปด้วย ก็สามารถเก็บใน query string
-            window.location.href = "result.html?answer=" + option;
+            document.body.classList.remove("fade-in");
+            document.body.classList.add("fade-out");
+
+            setTimeout(() => {
+                window.location.href = "result.html?answer=" + option;
+            }, 600); // ตรงกับเวลา fadeOut
         }
     </script>
 

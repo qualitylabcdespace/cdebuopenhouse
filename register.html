@@ -6,220 +6,348 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>แบบฟอร์มลงทะเบียน</title>
   <style>
+    @font-face {
+      font-family: 'SukhumvitSetBold';
+      src: url('sukhumvit-set-bold.ttf') format('truetype');
+      font-weight: bold;
+      font-style: normal;
+    }
 
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      /* ❌ กันเลื่อน */
+    }
 
+    body {
+      font-family: 'SukhumvitSetBold', sans-serif;
+      min-height: 100vh;
+      background: url('pics/Poster for edit 2.png') no-repeat center center;
+      background-size: cover;
+      background-position: center;
+      background-attachment: scroll;
+      /* ✅ ใช้ scroll แทน fixed */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* ✅ ฟอร์มอยู่กลางจอ */
+    }
 
+    .form-container {
+      width: 100%;
+      height: 100%;
+      ;
+      max-width: 390px;
+      text-align: center;
+      color: #fff;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 15px;
+      ;
+    }
 
- @font-face {
-            font-family: 'SukhumvitSetBold';
-            src: url('sukhumvit-set-bold.ttf') format('truetype');
-            font-weight: bold;
-            font-style: normal;
-        }
+     .checkbox-container {
+    display: flex;
+  justify-content: center; /* จัดให้อยู่ตรงกลาง */
+  margin-bottom: 10px; 
+   align-items: center;   /* เว้นระยะจากปุ่มยืนยัน */
+  font-size: 12px; /* ตัวอักษรเล็กลง */
+  color: #ffffff;
+  }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'SukhumvitSetBold', sans-serif;
-            /* ✅ ใช้ฟอนต์ใหม่ */
-            min-height: 100vh;
-            background: url('pics/Poster for edit 2.png') no-repeat center center fixed;
-            background-size: cover;
-        }
-
-        .form-container {
-            width: 100%;
-            max-width: 320px;
-            margin: 0 auto;
-            text-align: center;
-            color: #fff;
-            padding: 0 20px;
-           
-
-        label {
-            display: block;
-            text-align: left;
-            margin: 10px 0 5px;
-            font-size: 14px;
-            font-weight: bold;
-            
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 12px 15px;
-            border: none;
-            border-radius: 50px;
-            background: rgba(255, 215, 150, 0.3);
-            color: #ffffffc2;
-            font-size: 12px;
-            outline: none;
-            box-shadow: inset 0 0 5px rgba(255, 200, 120, 0.5);
-            margin-bottom: 15px;
-             font-family: 'SukhumvitSetBold', sans-serif;
-        }
-        }
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        select {
-            appearance: none;
-            cursor: pointer;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .form-row input,
-        .form-row select {
-            flex: 1;
-        }
-
-        button {
-            background: linear-gradient(180deg, #ffd85c, #d4a017);
-            border: 0px solid #fff3b0;
-            padding: 12px 20px;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(255, 220, 100, 0.7);
-            transition: 0.3s;
-            margin-top: 10px;
-            width: 100%;
-        }
-
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 220, 100, 1);
-        }
-
-        /* เริ่มหน้าใหม่แบบจาง */
-.fade-in {
-  animation: fadeIn 0.6s ease-in forwards;
+  .checkbox-container input[type="checkbox"] {
+     width: 12px;       /* ความกว้างเท่ากับความสูงข้อความ */
+  height: 10px;      /* ความสูงเท่ากับความสูงข้อความ */
+  margin-right: 6px; 
+  margin-top: 17px; /* เว้นระยะห่างจากข้อความ */
+  vertical-align: middle; /* ให้ตรงกลางกับข้อความ */
 }
-
-/* จางหายไป */
-.fade-out {
-  animation: fadeOut 0.6s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to   { opacity: 0; }
-}
-
-
-        @media (max-width: 480px) {
-            .form-row {
-                flex-direction: column;
-            }
-        }
-    </style>
-    </head>
-
   
-  <body>
-    <div class="form-container">
-      <h2>ลงทะเบียนเพื่อเข้าร่วมงาน</h2>
-      <form id="registerForm">
-        <label>ชื่อ - นามสกุล</label>
-        <input type="text" id="fullname" placeholder="แฮร์รี่ ฮอตพอต" required>
-  
-        <label>ชื่อเล่น</label>
-        <input type="text" id="nickname" placeholder="สมชาย" required>
-  
-        <div class="form-row">
-          <div>
-            <label>เพศ</label>
-            <select id="gender" required>
-              <option value="">เลือกเพศ</option>
-              <option>ชาย</option>
-              <option>หญิง</option>
-              <option>ตัวเเม่สิคะ</option>
-            </select>
-          </div>
-          <div>
-            <label>อายุ</label>
-            <input type="number" id="age" placeholder="18" required>
-          </div>
+
+  .checkbox-container label {
+    cursor: pointer;
+  }
+
+  .checkbox-container a {
+    color: #fff3b0;
+    text-decoration: none;
+  }
+
+  .checkbox-container a:hover {
+    text-decoration: underline;
+  }
+
+    label {
+      display: block;
+      text-align: left;
+      margin: 10px 0 5px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 50px;
+      background: rgba(255, 215, 150, 0.3);
+      color: #ffffffc2;
+      font-size: 12px;
+      outline: none;
+      box-shadow: inset 0 0 5px rgba(255, 200, 120, 0.5);
+      margin-bottom: 15px;
+      font-family: 'SukhumvitSetBold', sans-serif;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    select {
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .form-row input,
+    .form-row select {
+      flex: 1;
+    }
+
+    button {
+      background: #ffc73a;
+      border: 0px solid #fff3b0;
+      padding: 7px 7px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255, 220, 100, 0.7);
+      transition: 0.3s;
+      margin-top: -50px;
+      width: 30%;
+      height: 10%;
+      font-family: 'SukhumvitSetBold', sans-serif;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(255, 220, 100, 1);
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-in forwards;
+    }
+
+    .fade-out {
+      animation: fadeOut 0.6s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .form-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <h2>ลงทะเบียนเพื่อเข้าร่วมงาน</h2>
+    <form id="registerForm">
+      <label>ชื่อ - นามสกุล</label>
+      <input type="text" id="fullname" placeholder="แฮร์รี่ ฮอตพอต" required>
+
+      <label>ชื่อเล่น</label>
+      <input type="text" id="nickname" placeholder="มะเดี่ยว" required>
+
+      <div class="form-row">
+        <div>
+          <label>เพศ</label>
+          <select id="gender" required>
+            <option value="">เลือกเพศ</option>
+            <option>ชาย</option>
+            <option>หญิง</option>
+            <option>ตัวเเม่สิคะ</option>
+            <option>อื่นๆ</option>
+          </select>
         </div>
-  
-        <label>ระดับชั้น</label>
-        <select id="grade" required>
-          <option value="">เลือกระดับชั้น</option>
-          <option>มัธยมต้น</option>
-          <option>มัธยมปลาย</option>
-          <option>มหาวิทยาลัย</option>
-          <option>ปวช/ปวส</option>
-        </select>
-  
-        <label>จังหวัด</label>
-        <select id="province" required>
-          <option value="">เลือกจังหวัด</option>
-          <option>กรุงเทพมหานคร</option>
-          <option>เชียงใหม่</option>
-          <option>ขอนแก่น</option>
-          <option>ภูเก็ต</option>
-        </select>
-  
-        <label>เบอร์โทรศัพท์</label>
-        <input type="tel" id="phone" maxlength="10" placeholder="ตัวเลข 10 หลัก" required>
-  
-        <button type="submit">Confirm</button>
-      </form>
-    </div>
-  
-    <script>
-      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylc-tX85y1VtXvkZWI_XABrwI-55OnW55c_Y71LA6E2mY5Nzrr7pWne0Z3S84ddwyZug/exec";
-        
-      document.addEventListener("DOMContentLoaded", () => {
-          document.body.classList.add("fade-in");
-        });
+        <div>
+          <label>อายุ</label>
+          <input type="number" id="age" placeholder="18" required>
+        </div>
+      </div>
 
-      document.getElementById("registerForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
+      <label>ระดับชั้น</label>
+      <select id="grade" required>
+        <option value="">เลือกระดับชั้น</option>
+        <option>มัธยมต้น</option>
+        <option>มัธยมปลาย</option>
+        <option>มหาวิทยาลัย</option>
+        <option>สายอาชีพ ปวช/ปวส</option>
+      </select>
 
-        const formData = new FormData();
-        formData.append("action", "register");
-        formData.append("fullname", document.getElementById("fullname").value);
-        formData.append("nickname", document.getElementById("nickname").value);
-        formData.append("gender", document.getElementById("gender").value);
-        formData.append("age", document.getElementById("age").value);
-        formData.append("grade", document.getElementById("grade").value);
-        formData.append("province", document.getElementById("province").value);
-        formData.append("phone", document.getElementById("phone").value);
+      <label>จังหวัด</label>
+      <select id="province" required>
+        <option value="">เลือกจังหวัด</option>
+      <option>กรุงเทพมหานคร</option>
+      <option>กระบี่</option>
+      <option>กาญจนบุรี</option>
+      <option>กาฬสินธุ์</option>
+      <option>กำแพงเพชร</option>
+      <option>ขอนแก่น</option>
+      <option>จันทบุรี</option>
+      <option>ฉะเชิงเทรา</option>
+      <option>ชัยนาท</option>
+      <option>ชัยภูมิ</option>
+      <option>ชุมพร</option>
+      <option>ชลบุรี</option>
+      <option>เชียงใหม่</option>
+      <option>เชียงราย</option>
+      <option>ตรัง</option>
+      <option>ตราด</option>
+      <option>ตาก</option>
+      <option>นครนายก</option>
+      <option>นครปฐม</option>
+      <option>นครพนม</option>
+      <option>นครราชสีมา</option>
+      <option>นครศรีธรรมราช</option>
+      <option>นครสวรรค์</option>
+      <option>นราธิวาส</option>
+      <option>น่าน</option>
+      <option>นนทบุรี</option>
+      <option>บึงกาฬ</option>
+      <option>บุรีรัมย์</option>
+      <option>ประจวบคีรีขันธ์</option>
+      <option>ปทุมธานี</option>
+      <option>ปราจีนบุรี</option>
+      <option>ปัตตานี</option>
+      <option>พระนครศรีอยุธยา</option>
+      <option>พังงา</option>
+      <option>พิจิตร</option>
+      <option>พิษณุโลก</option>
+      <option>เพชรบุรี</option>
+      <option>เพชรบูรณ์</option>
+      <option>แพร่</option>
+      <option>พะเยา</option>
+      <option>ภูเก็ต</option>
+      <option>มหาสารคาม</option>
+      <option>มุกดาหาร</option>
+      <option>แม่ฮ่องสอน</option>
+      <option>ยะลา</option>
+      <option>ยโสธร</option>
+      <option>ร้อยเอ็ด</option>
+      <option>ระนอง</option>
+      <option>ระยอง</option>
+      <option>ราชบุรี</option>
+      <option>ลพบุรี</option>
+      <option>ลำปาง</option>
+      <option>ลำพูน</option>
+      <option>เลย</option>
+      <option>ศรีสะเกษ</option>
+      <option>สกลนคร</option>
+      <option>สงขลา</option>
+      <option>สมุทรสาคร</option>
+      <option>สมุทรปราการ</option>
+      <option>สมุทรสงคราม</option>
+      <option>สระแก้ว</option>
+      <option>สระบุรี</option>
+      <option>สิงห์บุรี</option>
+      <option>สุโขทัย</option>
+      <option>สุพรรณบุรี</option>
+      <option>สุราษฎร์ธานี</option>
+      <option>สุรินทร์</option>
+      <option>สตูล</option>
+      <option>หนองคาย</option>
+      <option>หนองบัวลำภู</option>
+      <option>อำนาจเจริญ</option>
+      <option>อุดรธานี</option>
+      <option>อุตรดิตถ์</option>
+      <option>อุทัยธานี</option>
+      <option>อุบลราชธานี</option>
+      </select>
 
-        try {
-          await fetch(SCRIPT_URL, {
-            method: "POST",
-            mode: "no-cors",   
-            body: formData,
-          });
-         document.body.classList.remove("fade-in");
-          document.body.classList.add("fade-out");
+      <label>เบอร์โทรศัพท์</label>
+      <input type="tel" id="phone" maxlength="10" placeholder="ตัวเลข 10 หลัก" required>
+     
+      <div class="checkbox-container">
+        <input type="checkbox" id="agree">
+        <label for="agree">
+          ข้าพเจ้ายินยอมตาม
+          <a href="https://www.bu.ac.th/th/privacy-policy" target="_blank">นโยบายคุ้มครองข้อมูลส่วนบุคคล</a>
+        </label>
+      </div>
 
-          setTimeout(() => {
-            window.location.href = "quiz1.html";
-          }, 600); 
-        } catch (err) {
-          console.error("❌ ส่งข้อมูลไม่สำเร็จ:", err);
-        }
-      });
-    </script>
-  
-  
-  
-  </body>
+
+      <button type="submit">Confirm</button>
+    </form>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylc-tX85y1VtXvkZWI_XABrwI-55OnW55c_Y71LA6E2mY5Nzrr7pWne0Z3S84ddwyZug/exec";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.classList.add("fade-in");
+    });
+
+    
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append("action", "register");
+      formData.append("fullname", document.getElementById("fullname").value);
+      formData.append("nickname", document.getElementById("nickname").value);
+      formData.append("gender", document.getElementById("gender").value);
+      formData.append("age", document.getElementById("age").value);
+      formData.append("grade", document.getElementById("grade").value);
+      formData.append("province", document.getElementById("province").value);
+      formData.append("phone", document.getElementById("phone").value);
+
+      try {
+         fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: formData });
+       
+
+        document.body.classList.remove("fade-in");
+        document.body.classList.add("fade-out");
+
+        setTimeout(() => {
+          window.location.href = "quiz1.html";
+        }, 600);
+      } catch (err) {
+        console.error("❌ ส่งข้อมูลไม่สำเร็จ:", err);
+      }
+    });
+  </script>
+</body>
+
 </html>
-  

@@ -38,55 +38,21 @@
     }
 
     .form-container {
-      width: 90vw;
+      width: 100%;
       height: 100%;
-      ;
-      max-width: 340px;
-      
+      max-width: 390px;
       text-align: center;
       color: #fff;
-      padding: 10px 20px -2px 20px;
+      padding: 20px;
       background: rgba(0, 0, 0, 0.25);
       border-radius: 15px;
-      box-sizing: border-box;
       ;
     }
-
-     .checkbox-container {
-    display: flex;
-  justify-content: center; /* จัดให้อยู่ตรงกลาง */
-  margin-bottom: 10px; 
-   align-items: center;   /* เว้นระยะจากปุ่มยืนยัน */
-  font-size: 12px; /* ตัวอักษรเล็กลง */
-  color: #ffffff;
-  }
-
-  .checkbox-container input[type="checkbox"] {
-     width: 12px;       /* ความกว้างเท่ากับความสูงข้อความ */
-  height: 10px;      /* ความสูงเท่ากับความสูงข้อความ */
-  margin-right: 6px; 
-  margin-top: 17px; /* เว้นระยะห่างจากข้อความ */
-  vertical-align: middle; /* ให้ตรงกลางกับข้อความ */
-}
-  
-
-  .checkbox-container label {
-    cursor: pointer;
-  }
-
-  .checkbox-container a {
-    color: #fff3b0;
-    text-decoration: none;
-  }
-
-  .checkbox-container a:hover {
-    text-decoration: underline;
-  }
 
     label {
       display: block;
       text-align: left;
-      margin: 5px 0 3px;
+      margin: 10px 0 5px;
       font-size: 14px;
       font-weight: bold;
     }
@@ -94,7 +60,7 @@
     input,
     select {
       width: 100%;
-      padding: 10px 15px;
+      padding: 12px 15px;
       border: none;
       border-radius: 50px;
       background: rgba(255, 215, 150, 0.3);
@@ -128,16 +94,15 @@
     button {
       background: #ffc73a;
       border: 0px solid #fff3b0;
-      padding: 7px 7px;
+      padding: 12px 20px;
       border-radius: 30px;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 0 20px rgba(255, 220, 100, 0.7);
       transition: 0.3s;
-      margin-top: -50px;
-      width: 30%;
-      height: 10%;
+      margin-top: 10px;
+      width: 35%;
       font-family: 'SukhumvitSetBold', sans-serif;
     }
 
@@ -300,15 +265,7 @@
 
       <label>เบอร์โทรศัพท์</label>
       <input type="tel" id="phone" maxlength="10" placeholder="ตัวเลข 10 หลัก" required>
-     
-      <div class="checkbox-container">
-        <input type="checkbox" id="agree">
-        <label for="agree">
-          ข้าพเจ้ายินยอมตาม
-          <a href="https://www.bu.ac.th/th/privacy-policy" target="_blank">นโยบายคุ้มครองข้อมูลส่วนบุคคล</a>
-        </label>
-      </div>
-
+      
 
       <button type="submit">Confirm</button>
     </form>
@@ -321,7 +278,6 @@
       document.body.classList.add("fade-in");
     });
 
-    
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 

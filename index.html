@@ -33,17 +33,15 @@
             overflow: hidden;
         }
 
-
         .bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url("pics/Poster\ for\ edit-2.png") no-repeat center center;
+            background: url("pics/Poster for edit-2.png") no-repeat center center;
             background-size: cover;
             background-position: center;
-            background-attachment: scroll;
             z-index: -1;
         }
 
@@ -56,7 +54,8 @@
             border-radius: 50%;
             background: radial-gradient(circle, #fffbe6 60%, #ffe066 100%, transparent 100%);
             opacity: 0.85;
-            animation: sparkle-float 4.5s cubic-bezier(0.4, 0, 0.2, 1) forwards, sparkle-fade 4.5s linear forwards;
+            animation: sparkle-float 4.5s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+                sparkle-fade 4.5s linear forwards;
             box-shadow: 0 0 8px 2px #fffbe6, 0 0 16px 4px #ffe06655;
             will-change: transform, opacity;
         }
@@ -96,18 +95,6 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-        }
-
-        .logo-box {
-            position: relative;
-            z-index: 1;
-            transform: translateY(-200px);
-        }
-
-        .logo-box img {
-            max-width: 95%;
-            height: auto;
-            filter: drop-shadow(0px 0px 20px gold);
         }
 
         .text-box {
@@ -171,19 +158,11 @@
             #join-text {
                 font-size: 3vw;
             }
-
-            .logo-box img {
-                max-width: 40%;
-            }
         }
 
         @media (min-width: 1024px) {
             #join-text {
                 font-size: 2.5rem;
-            }
-
-            .logo-box img {
-                max-width: 300px;
             }
         }
     </style>
@@ -194,39 +173,77 @@
     <div class="overlay"></div>
     <div id="sparkle-container"></div>
 
-    
-
     <div class="text-box">
         <h1 id="join-text">Join Us</h1>
     </div>
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
     <script>
-         if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(registrations => {
-                    for (let registration of registrations) {
-                        registration.unregister(); // ลบ service worker เก่า
-                    }
-                });
+        // ✅ Firebase Config (เปลี่ยนเป็นของคุณเอง)
+       const firebaseConfig = {
+            apiKey: "AIzaSyCTPehlb5M9oevBLtRFv5r-zHgcPdz92Fc",
+            authDomain: "cdeopenhouse.firebaseapp.com",
+            projectId: "cdeopenhouse",   // ต้องตรงกับ console
+            storageBucket: "cdeopenhouse.appspot.com",
+            messagingSenderId: "1082864604520",
+            appId: "1:1082864604520:web:b8394ae145789cd07ff2dd",
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // ✅ ฟังก์ชันหาวันงาน (แก้ตามวันที่จริง)
+        function getEventDay() {
+            const today = new Date();
+            const day1 = new Date("2025-08-29"); // 📌 วันแรก
+            const day2 = new Date("2025-08-30"); // 📌 วันที่สอง
+
+            if (today.toDateString() === day1.toDateString()) return "day1";
+            if (today.toDateString() === day2.toDateString()) return "day2";
+            return "other";
+        }
+
+        // ✅ ฟังก์ชันบันทึก count
+        function countJoinClick() {
+                const day = getEventDay();
+                const counterRef = db.collection("stats").doc("join");
+
+                // เขียนข้อมูล + log ผล
+                counterRef.set({
+                    [day]: firebase.firestore.FieldValue.increment(1)
+                }, { merge: true })
+                    .then(() => {
+                        console.log("✅ Count saved:", day);
+                    })
+                    .catch((error) => {
+                        console.error("❌ Failed to save count:", error);
+                    });
             }
+
+
+        // เอฟเฟกต์ fade
         document.addEventListener("DOMContentLoaded", () => {
             document.body.classList.add("fade-in");
         });
 
+        // ✅ แตะจอ → บันทึก + ไป quiz
         document.body.addEventListener("click", () => {
+            countJoinClick(); // นับ 1 คน
             document.body.classList.remove("fade-in");
             document.body.classList.add("fade-out");
             setTimeout(() => {
-                window.location.href = "quiz1.html";
+                window.location.href = "quiz1.html"; // ไปต่อ
             }, 600);
         });
 
+        // เอฟเฟกต์ sparkle
         const sparkleContainer = document.getElementById("sparkle-container");
         const sparkleCount = 28;
-
         function randomBetween(a, b) {
             return Math.random() * (b - a) + a;
         }
-
         function createSparkle() {
             const sparkle = document.createElement("div");
             sparkle.className = "sparkle";
@@ -246,13 +263,11 @@
                 sparkle.remove();
             });
         }
-
         function loopSparkles() {
             for (let i = 0; i < sparkleCount; i++) {
                 setTimeout(createSparkle, randomBetween(0, 2000));
             }
         }
-
         loopSparkles();
         setInterval(loopSparkles, 2000);
     </script>

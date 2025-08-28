@@ -242,50 +242,62 @@
           document.addEventListener("DOMContentLoaded", () => {
                 document.body.classList.add("fade-in");
             });
-        function showPopup() {
-            const popup = document.getElementById("popup");
-            popup.style.display = "flex";
 
-            // ดึง userId ที่ได้จากการ register (ไม่สร้างสุ่มใหม่แล้ว)
-            let uniqueId = localStorage.getItem("userId");
-            if (!uniqueId) {
-                alert("ไม่พบข้อมูลการลงทะเบียน กรุณาลงทะเบียนก่อน");
-                window.location.href = "register.html";
-                return;
+            function showPopup() {
+                const popup = document.getElementById("popup");
+                popup.style.display = "flex";
+
+                // ✅ ตรวจสอบว่ามี QR Code ของผู้ใช้ใน localStorage หรือยัง
+                let uniqueId = localStorage.getItem("userId");
+                if (!uniqueId) {
+                    // สร้างรหัสสุ่มครั้งแรก และเก็บไว้
+                    uniqueId = generateRandomId(10);
+                    localStorage.setItem("userId", uniqueId);
+                }
+
+                // แสดง QR Code ลง Canvas
+                const canvas = document.getElementById("qrcode");
+                QRCode.toCanvas(canvas, uniqueId, { width: 220 }, function (error) {
+                    if (error) console.error(error);
+                });
             }
 
-            // ✅ แสดง QR ลง Canvas
-            const canvas = document.getElementById("qrcode");
-            QRCode.toCanvas(canvas, uniqueId, { width: 220 }, function (error) {
-                if (error) console.error(error);
-            });
-        }
+            // ปิด Popup
+            function closePopup() {
+                document.getElementById("popup").style.display = "none";
+            }
 
-        // ✅ ปิด Popup
-        function closePopup() {
-            document.getElementById("popup").style.display = "none";
-        }
+            // บันทึก QR Code ลงเครื่อง
+            function saveQR() {
+                const canvas = document.getElementById("qrcode");
+                const link = document.createElement("a");
+                link.download = "my-qrcode.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            }
 
-        // ✅ บันทึก QR Code ลงเครื่อง
-        function saveQR() {
-            const canvas = document.getElementById("qrcode");
-            const link = document.createElement("a");
-            link.download = "my-qrcode.png";
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-        }
+            // สร้างรหัสสุ่ม
+            function generateRandomId(length) {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let result = '';
+                for (let i = 0; i < length; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            }
 
-        // ✅ สร้างเอฟเฟกต์ฝุ่นวิ้ง
-        function createSparkle() {
-            const sparkle = document.createElement("div");
-            sparkle.className = "sparkle";
-            sparkle.style.left = Math.random() * window.innerWidth + "px";
-            sparkle.style.top = window.innerHeight + "px";
-            document.body.appendChild(sparkle);
+            // เอฟเฟกต์ฝุ่นวิ้ง
+            function createSparkle() {
+                const sparkle = document.createElement("div");
+                sparkle.className = "sparkle";
+                sparkle.style.left = Math.random() * window.innerWidth + "px";
+                sparkle.style.top = window.innerHeight + "px";
+                document.body.appendChild(sparkle);
 
-            setTimeout(() => sparkle.remove(), 5000);
-        }
-        setInterval(createSparkle, 500);
+                setTimeout(() => sparkle.remove(), 5000);
+            }
+            setInterval(createSparkle, 500);
+
     </script>
 
 </body>

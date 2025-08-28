@@ -18,17 +18,29 @@
         body {
             margin: 0;
             padding: 0;
-            background: url('pics/Poster for edit.png') no-repeat center center fixed;
+            background: url('pics/mainn\ bvg.png') no-repeat center center fixed;
             background-size: cover;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            color: #f5e6c8;
+            color: #52462d;
             overflow: hidden;
             font-family: 'SukhumvitSetBold', sans-serif;
         }
+
+        body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3); /* ปรับความมืด */
+  z-index: -1;
+}
+
 
         .container {
             display: flex;

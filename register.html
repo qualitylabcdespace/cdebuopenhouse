@@ -253,6 +253,7 @@
     </form>
   </div>
   <script>
+    // บังคับ service worker / cache เก่าไม่ให้รบกวน
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(registrations => {
         for (let registration of registrations) {
@@ -261,9 +262,42 @@
       });
     }
 
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylc-tX85y1VtXvkZWI_XABrwI-55OnW55c_Y71LA6E2mY5Nzrr7pWne0Z3S84ddwyZug/exec"
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylc-tX85y1VtXvkZWI_XABrwI-55OnW55c_Y71LA6E2mY5Nzrr7pWne0Z3S84ddwyZug/exec";
 
-    document.addEventListener("DOMContentLoaded", () => { document.body.classList.add("fade-in"); }); document.getElementById("registerForm").addEventListener("submit", async (e) => { e.preventDefault(); const formData = new FormData(); formData.append("action", "register"); formData.append("fullname", document.getElementById("fullname").value); formData.append("nickname", document.getElementById("nickname").value); formData.append("gender", document.getElementById("gender").value); formData.append("age", document.getElementById("age").value); formData.append("grade", document.getElementById("grade").value); formData.append("province", document.getElementById("province").value); formData.append("phone", document.getElementById("phone").value); try { fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: formData }); window.location.href = "quiz1.html"; document.body.classList.remove("fade-in"); document.body.classList.add("fade-out"); setTimeout(() => { window.location.href = "quiz1.html"; }, 600); } catch (err) { console.error("❌ ส่งข้อมูลไม่สำเร็จ:", err); } }); </script>
+    // เพิ่ม query string ให้ fetch ไม่ใช้ cache เก่า
+    function getFormData() {
+      const formData = new FormData();
+      formData.append("action", "register");
+      formData.append("fullname", document.getElementById("fullname").value);
+      formData.append("nickname", document.getElementById("nickname").value);
+      formData.append("gender", document.getElementById("gender").value);
+      formData.append("age", document.getElementById("age").value);
+      formData.append("grade", document.getElementById("grade").value);
+      formData.append("province", document.getElementById("province").value);
+      formData.append("phone", document.getElementById("phone").value);
+      return formData;
+    }
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = getFormData();
+
+      try {
+        // เพิ่ม timestamp query string บังคับ reload
+        fetch(SCRIPT_URL + "?v=" + new Date().getTime(), {
+          method: "POST",
+          mode: "no-cors",
+          body: formData
+        });
+
+        // บังคับโหลด quiz1.html แบบไม่ใช้ cache
+        window.location.href = "quiz1.html?v=" + new Date().getTime();
+      } catch (err) {
+        console.error("❌ ส่งข้อมูลไม่สำเร็จ:", err);
+      }
+    });
+  </script>
+
 </body>
 
 </html>

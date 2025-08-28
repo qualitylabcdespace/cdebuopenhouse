@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
 
   <title>แบบฟอร์มลงทะเบียน</title>
   <style>
@@ -37,14 +37,14 @@
       /* ✅ ใช้ scroll แทน fixed */
       display: flex;
       justify-content: center;
-      
+
       /* ✅ ฟอร์มอยู่กลางจอ */
     }
 
     .form-container {
       width: 80%;
       height: 100%;
-      
+
       text-align: center;
       color: #fff;
       padding: 10px;
@@ -254,14 +254,16 @@
   </div>
   <script>
     if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(registrations => {
-    for (let registration of registrations) {
-      registration.unregister(); // ลบ service worker เก่า
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let registration of registrations) {
+          registration.unregister(); // ลบ service worker เก่า
+        }
+      });
     }
-  });
-}
 
-   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylc-tX85y1VtXvkZWI_XABrwI-55OnW55c_Y71LA6E2mY5Nzrr7pWne0Z3S84ddwyZug/exec"; document.addEventListener("DOMContentLoaded", () => { document.body.classList.add("fade-in"); }); document.getElementById("registerForm").addEventListener("submit", async (e) => { e.preventDefault(); const formData = new FormData(); formData.append("action", "register"); formData.append("fullname", document.getElementById("fullname").value); formData.append("nickname", document.getElementById("nickname").value); formData.append("gender", document.getElementById("gender").value); formData.append("age", document.getElementById("age").value); formData.append("grade", document.getElementById("grade").value); formData.append("province", document.getElementById("province").value); formData.append("phone", document.getElementById("phone").value); try { fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: formData }); window.location.href = "quiz1.html"; document.body.classList.remove("fade-in"); document.body.classList.add("fade-out"); setTimeout(() => { window.location.href = "quiz1.html"; }, 600); } catch (err) { console.error("❌ ส่งข้อมูลไม่สำเร็จ:", err); } }); </script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylc-tX85y1VtXvkZWI_XABrwI-55OnW55c_Y71LA6E2mY5Nzrr7pWne0Z3S84ddwyZug/exec"
+
+    document.addEventListener("DOMContentLoaded", () => { document.body.classList.add("fade-in"); }); document.getElementById("registerForm").addEventListener("submit", async (e) => { e.preventDefault(); const formData = new FormData(); formData.append("action", "register"); formData.append("fullname", document.getElementById("fullname").value); formData.append("nickname", document.getElementById("nickname").value); formData.append("gender", document.getElementById("gender").value); formData.append("age", document.getElementById("age").value); formData.append("grade", document.getElementById("grade").value); formData.append("province", document.getElementById("province").value); formData.append("phone", document.getElementById("phone").value); try { fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: formData }); window.location.href = "quiz1.html"; document.body.classList.remove("fade-in"); document.body.classList.add("fade-out"); setTimeout(() => { window.location.href = "quiz1.html"; }, 600); } catch (err) { console.error("❌ ส่งข้อมูลไม่สำเร็จ:", err); } }); </script>
 </body>
 
 </html>

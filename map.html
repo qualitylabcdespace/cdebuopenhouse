@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Page</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            opacity: 0;
+            /* เริ่มด้วยซ่อนหน้า */
+            transition: opacity 1s ease-in-out;
+            /* fade-in/out */
+        }
+
+        body.fade-in {
+            opacity: 1;
+        }
+
+        body.fade-out {
+            opacity: 0;
+        }
+
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('pics/mainn bvg.png') no-repeat center center;
+            background-size: cover;
+            z-index: 0;
+        }
+
+        .content-on-bg {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .custom-img {
+            width: 120%;
+            margin-left: 100px;
+            margin-top: 30%;
+            height: auto;
+            object-fit: contain;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+            transition: opacity 1s ease-in-out;
+            opacity: 0;
+            /* เริ่มด้วยซ่อนรูป */
+        }
+
+        .custom-img.fade-in {
+            opacity: 1;
+        }
+
+          .fade-in {
+            animation: fadeIn 0.6s ease-in forwards;
+        }
+         @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="bg"></div>
+    <div class="content-on-bg">
+        <img src="pics/3333.png" alt="Your Picture" class="custom-img">
+    </div>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            // เฟดหน้าและรูปเข้า
+            document.body.classList.add("fade-in");
+            document.querySelector(".custom-img").classList.add("fade-in");
+        });
+
+        // ถ้าต้องการ fade-out ก่อนเปลี่ยนหน้า:
+        // setTimeout(() => {
+        //     document.body.classList.remove("fade-in");
+        //     document.body.classList.add("fade-out");
+        // }, 3000); // 3 วิ แล้ว fade-out
+    </script>
+</body>
+
+</html>
